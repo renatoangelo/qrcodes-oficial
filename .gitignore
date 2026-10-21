@@ -1,0 +1,9 @@
+# Dados de cada instalação (destinos, usuários, leituras, histórico): nunca vão para o Git
+dados/
+# Arquivo do sistema antigo para importar
+importar/*.json
+
+.DS_Store
+
+# Pacotes gerados por ferramentas/pacote.sh
+qrcodes-*.zip

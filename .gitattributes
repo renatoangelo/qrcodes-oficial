@@ -1,0 +1,5 @@
+# Fora do pacote .zip (ferramentas/pacote.sh): só servem para desenvolver
+ferramentas/        export-ignore
+docker-compose.yml  export-ignore
+.gitattributes      export-ignore
+.gitignore          export-ignore

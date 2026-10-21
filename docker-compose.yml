@@ -1,0 +1,9 @@
+# Servidor local para testes: PHP 8.4 + Apache + GD (o mesmo PHP do servidor).
+# Subir: docker compose up -d --build → http://localhost:8092
+services:
+  web:
+    build: ./ferramentas
+    ports:
+      - "8092:80"
+    volumes:
+      - ./:/var/www/html

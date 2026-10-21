@@ -1,0 +1,31 @@
+# Sistema de QR codes dinâmicos — regras do servidor (Apache / LiteSpeed)
+Options -Indexes -MultiViews
+DirectoryIndex index.php
+AddDefaultCharset UTF-8
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Código, dados e importação nunca são servidos ao navegador
+  RewriteRule ^(app|dados|importar|ferramentas)(/|$) - [F,L]
+  # arquivos internos do painel (começam com _) não são páginas
+  RewriteRule (^|/)_ - [F,L]
+  # .git e demais arquivos ocultos (o repositório é clonado direto na pasta pública);
+  # .well-known fica liberada porque o cPanel a usa para emitir o certificado HTTPS
+  RewriteRule (^|/)\.(?!well-known(/|$)) - [F,L]
+  # README, Docker e scripts de desenvolvimento
+  RewriteRule \.(md|yml|yaml|sh)$ - [F,L]
+  RewriteRule (^|/)Dockerfile$ - [F,L]
+  # cópias, backups e registros esquecidos na pasta pública
+  RewriteRule \.(zip|rar|tar|gz|bak|sql|log|json)$ - [F,L]
+
+  # /alias → index.php?a=alias (pastas e arquivos reais, como /admin, passam direto)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^([^/]+)/?$ index.php?a=$1 [L,QSA,B]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
